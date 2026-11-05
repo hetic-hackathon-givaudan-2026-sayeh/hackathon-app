@@ -3,12 +3,12 @@
 ## Stack
 - **API** : Node 24 + Express (TypeScript), PostgreSQL 17
 - **Front** : Vite (TypeScript)
-- **IA** : API compatible OpenAI (Mistral par défaut, Ollama possible), configurée dans `api/.env`
+- **IA** : API compatible OpenAI, Google Gemini par défaut (Mistral, Hugging Face et Ollama possibles), configurée dans `api/.env`
 
 ## Démarrer
 1. Prérequis : Docker Desktop lancé, VS Code + extension **Dev Containers**, clé SSH ajoutée sur GitHub (Windows : cloner dans WSL, pas dans `C:\`).
 2. `git clone git@github.com:ORGANISATION/hackathon-app.git`, ouvrir le dossier dans VS Code, puis `F1` → **Dev Containers: Reopen in Container** (installe tout et crée `api/.env`).
-3. Dans le terminal VS Code : `npm run dev`, puis ouvrir http://localhost:5173. Pour l'IA, renseigner `AI_API_KEY` dans `api/.env`.
+3. Dans le terminal VS Code : `npm run dev`, puis ouvrir http://localhost:5173. Pour l'IA, mettre une clé Gemini (aistudio.google.com/app/apikey) dans `AI_API_KEY` de `api/.env`.
 
 ## Vérifs utiles
 ```bash
