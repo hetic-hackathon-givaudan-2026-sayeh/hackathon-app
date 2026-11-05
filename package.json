@@ -8,9 +8,27 @@
   ],
   "scripts": {
     "dev": "concurrently -n api,web \"npm run dev -w api\" \"npm run dev -w web\"",
-    "build": "npm run build --workspaces"
+    "build": "npm run build --workspaces",
+    "prepare": "husky",
+    "lint": "eslint .",
+    "format": "prettier --write . '!db/data'",
+    "format:check": "prettier --check . '!db/data'"
   },
   "devDependencies": {
-    "concurrently": "^10.0.6"
+    "@eslint/js": "^10.0.1",
+    "concurrently": "^10.0.6",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.10",
+    "typescript-eslint": "^8.72.1"
+  },
+  "lint-staged": {
+    "*.{ts,js,mjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml,html,css}": "prettier --write"
   }
 }
