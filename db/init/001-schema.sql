@@ -1,0 +1,6 @@
+CREATE TABLE questions (
+  id         INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  question   TEXT NOT NULL,
+  answer     TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
