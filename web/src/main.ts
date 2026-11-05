@@ -10,7 +10,9 @@ async function load() {
   const health = await fetch('/api/health').then((r) => r.json());
   healthEl.textContent = `API OK · ${health.db}`;
 
-  const questions: Question[] = await fetch('/api/questions').then((r) => r.json());
+  const questions: Question[] = await fetch('/api/questions').then((r) =>
+    r.json(),
+  );
   listEl.replaceChildren(
     ...questions.map((q) => {
       const li = document.createElement('li');

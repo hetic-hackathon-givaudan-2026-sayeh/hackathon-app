@@ -1,0 +1,6 @@
+# l'environnement commun ne bouge pas sans un tech-lead
+/.devcontainer/      @hetic-hackathon-givaudan-2026-sayeh/tech-leads
+/.github/            @hetic-hackathon-givaudan-2026-sayeh/tech-leads
+/compose.yaml        @hetic-hackathon-givaudan-2026-sayeh/tech-leads
+/eslint.config.mjs   @hetic-hackathon-givaudan-2026-sayeh/tech-leads
+package.json         @hetic-hackathon-givaudan-2026-sayeh/tech-leads

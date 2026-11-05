@@ -27,7 +27,8 @@ server.get('/api/questions', async (_req, res) => {
 
 // Route IA : appelle un fournisseur compatible OpenAI configuré dans .env
 server.post('/api/ai', async (req, res) => {
-  const prompt = typeof req.body?.prompt === 'string' ? req.body.prompt.trim() : '';
+  const prompt =
+    typeof req.body?.prompt === 'string' ? req.body.prompt.trim() : '';
   if (!prompt) {
     res.status(400).json({ error: 'Champ "prompt" manquant' });
     return;
@@ -35,7 +36,9 @@ server.post('/api/ai', async (req, res) => {
 
   const { AI_BASE_URL, AI_MODEL, AI_API_KEY } = process.env;
   if (!AI_BASE_URL || !AI_MODEL) {
-    res.status(500).json({ error: 'AI_BASE_URL ou AI_MODEL absent de api/.env' });
+    res
+      .status(500)
+      .json({ error: 'AI_BASE_URL ou AI_MODEL absent de api/.env' });
     return;
   }
 
@@ -52,7 +55,10 @@ server.post('/api/ai', async (req, res) => {
   });
 
   if (!response.ok) {
-    res.status(502).json({ error: `Fournisseur IA : ${response.status}`, detail: await response.text() });
+    res.status(502).json({
+      error: `Fournisseur IA : ${response.status}`,
+      detail: await response.text(),
+    });
     return;
   }
 
