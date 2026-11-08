@@ -70,3 +70,4 @@ server.post('/api/ai', async (req, res) => {
 
 // Sans hôte explicite, Node écoute sur toutes les interfaces
 server.listen(port, () => console.log(`API sur http://localhost:${port}`));
+const inutile = 1;
