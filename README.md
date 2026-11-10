@@ -7,7 +7,7 @@ Environnement de développement de notre équipe pour le hackathon HETIC × Giva
 - **API** : Node 24 + Express en TypeScript (`api/`)
 - **Front** : Vite en TypeScript, sans framework pour l'instant (`web/`)
 - **Base** : PostgreSQL 17, schéma et données de test dans `db/init/`
-- **IA** : n'importe quelle API compatible OpenAI, configurée dans `api/.env`. Par défaut Google Gemini (`gemini-flash-lite-latest`) ; Mistral, Hugging Face et Ollama sont prêts en commentaire dans `api/.env.example`
+- **IA** : un modèle local (Ollama, `llama3.2:3b` par défaut) exposé en format compatible OpenAI, configuré dans `api/.env`. Aucune API d'IA externe (`docs/adr/0002-fournisseur-ia.md`)
 
 Les choix sont expliqués dans `docs/adr/`.
 
@@ -42,11 +42,13 @@ Les choix sont expliqués dans `docs/adr/`.
 
 ## Activer l'IA
 
-Une clé n'est jamais commitée : chacun utilise la sienne.
+L'IA tourne sur la machine, jamais chez un fournisseur externe : les données internes ne doivent pas sortir (voir `docs/adr/0002-fournisseur-ia.md`).
 
-1. Créer une clé gratuite (sans carte bancaire) sur https://aistudio.google.com/app/apikey
-2. La coller dans `api/.env` : `AI_API_KEY=ta_cle`
-3. Relancer : `Ctrl+C` puis `npm run dev` (le `.env` n'est lu qu'au démarrage)
+1. Installer **Ollama** sur la machine hôte (pas dans le conteneur) : https://ollama.com/download (sur Mac : `brew install ollama`)
+2. Télécharger le modèle, dans un terminal de la machine hôte : `ollama pull llama3.2:3b` (environ 2 Go). Sur une machine lente, `llama3.2:1b` est plus rapide, en changeant `AI_MODEL` dans `api/.env`.
+3. **Linux uniquement** : lancer Ollama avec `OLLAMA_HOST=0.0.0.0 ollama serve` pour qu'il soit joignable depuis le conteneur.
+4. `api/.env` est déjà configuré par défaut (`AI_BASE_URL=http://host.docker.internal:11434/v1`). Si `api/.env` existait avant, recopier les lignes `AI_` depuis `api/.env.example`.
+5. Relancer : `Ctrl+C` puis `npm run dev` (le `.env` n'est lu qu'au démarrage). La première réponse est plus lente : le modèle se charge en mémoire.
 
 ## Vérifier que tout marche
 
@@ -84,6 +86,7 @@ Problèmes rencontrés en montant l'environnement, avec la solution testée.
 - **`no configuration file provided`** : la commande `docker compose` a été lancée hors du dossier du projet.
 - **Erreurs `esbuild` ou `rolldown` (`Cannot find native binding`) au `npm run dev`** : la commande a été lancée dans le terminal de la machine, pas dans celui du conteneur. `node_modules` est installé pour Linux. Toujours utiliser le terminal de VS Code, dont le prompt commence par `node ➜ /workspace`. Ne jamais lancer `npm install` hors du conteneur.
 - **L'IA répond encore avec l'ancienne config** après une modification de `api/.env` : le fichier n'est lu qu'au démarrage. Arrêter avec `Ctrl+C` puis relancer `npm run dev`.
-- **`Fournisseur IA : 503` « high demand »** : le modèle Gemini est saturé. Réessayer plus tard, ou changer `AI_MODEL` dans `api/.env` (`gemini-flash-lite-latest` répondait en ~1,5 s quand les autres modèles étaient saturés), puis relancer `npm run dev`.
+- **`Fournisseur IA` ou `fetch failed` sur la route IA** : Ollama ne tourne pas sur la machine hôte, ou le modèle n'est pas téléchargé. Vérifier avec `ollama list` sur la machine hôte, puis `curl http://host.docker.internal:11434/v1/models` depuis le terminal du conteneur. Sous Linux, vérifier `OLLAMA_HOST=0.0.0.0`.
+- **Réponse IA très lente** : normal au premier appel (chargement du modèle). Si ça reste lent, passer à `llama3.2:1b` dans `api/.env`.
 
 Note : le Dockerfile utilise le miroir Debian `ftp.fr.debian.org`, car `deb.debian.org` était bloqué sur le réseau de l'école.

@@ -1,0 +1,302 @@
+openapi: 3.1.0
+info:
+  title: hackathon-app API
+  version: 0.1.0
+  description: >
+    Contrat de l'API Node (api/) consommée par le front (web/).
+    Les routes /api/trends décrivent le produit (détection de tendances, thème 3
+    du challenge Givaudan) : elles lisent les tendances calculées par le service
+    data et stockées dans PostgreSQL. Voir docs/adr/0003-contrat-api.md.
+servers:
+  - url: http://localhost:3000
+    description: API dans le dev container
+tags:
+  - name: setup
+    description: Routes de vérification de l'environnement (déjà en place)
+  - name: tendances
+    description: Routes du produit (à implémenter)
+paths:
+  /api/health:
+    get:
+      tags: [setup]
+      summary: Vérifie que l'API et la base répondent
+      responses:
+        '200':
+          description: API et PostgreSQL joignables
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status, db]
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  db:
+                    type: string
+                    description: Version de PostgreSQL renvoyée par la base
+                    example: PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2) on aarch64-unknown-linux-gnu
+  /api/questions:
+    get:
+      tags: [setup]
+      summary: Les 10 dernières questions de test (données de db/init/)
+      responses:
+        '200':
+          description: Liste des questions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Question'
+  /api/ai:
+    post:
+      tags: [setup]
+      summary: Envoie un prompt au modèle configuré dans api/.env
+      description: Le modèle tourne chez nous (docs/adr/0002-fournisseur-ia.md).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [prompt]
+              properties:
+                prompt:
+                  type: string
+                  example: Dis bonjour
+      responses:
+        '200':
+          description: Réponse du modèle
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [answer]
+                properties:
+                  answer:
+                    type: string
+        '400':
+          description: Champ prompt manquant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: AI_BASE_URL ou AI_MODEL absent de api/.env
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '502':
+          description: Le serveur du modèle a répondu en erreur
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/trends:
+    get:
+      tags: [tendances]
+      summary: Les tendances du moment, triées par score d'opportunité
+      parameters:
+        - name: secteur
+          in: query
+          required: false
+          description: Filtre sur un secteur client
+          schema:
+            $ref: '#/components/schemas/Secteur'
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 20
+            default: 5
+      responses:
+        '200':
+          description: Tendances triées par score décroissant
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tendance'
+  /api/trends/{id}:
+    get:
+      tags: [tendances]
+      summary: Le détail d'une tendance et l'historique de ses signaux
+      parameters:
+        - $ref: '#/components/parameters/TrendId'
+      responses:
+        '200':
+          description: Tendance avec son historique semaine par semaine
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Tendance'
+                  - type: object
+                    required: [historique]
+                    properties:
+                      historique:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/PointHistorique'
+        '404':
+          description: Tendance inconnue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/trends/{id}/argumentaire:
+    post:
+      tags: [tendances]
+      summary: Génère avec le modèle local un argumentaire pour un client
+      parameters:
+        - $ref: '#/components/parameters/TrendId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cible:
+                  type: string
+                  enum: [rd, commercial]
+                  default: rd
+                  description: rd = recommandation pour la R&D, commercial = angle de discussion client
+      responses:
+        '200':
+          description: Texte généré
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [texte, cible]
+                properties:
+                  cible:
+                    type: string
+                    enum: [rd, commercial]
+                  texte:
+                    type: string
+        '404':
+          description: Tendance inconnue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '502':
+          description: Le modèle local n'a pas répondu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  parameters:
+    TrendId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  schemas:
+    Question:
+      type: object
+      required: [id, question, answer, created_at]
+      properties:
+        id:
+          type: integer
+        question:
+          type: string
+        answer:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    Secteur:
+      type: string
+      enum: [boissons, snacking, confiserie, laitier, beaute, parfum, hygiene]
+    Tendance:
+      type: object
+      required:
+        [
+          id,
+          nom,
+          verdict,
+          score_durabilite,
+          score_opportunite,
+          secteurs,
+          pays,
+          sources,
+        ]
+      properties:
+        id:
+          type: integer
+        nom:
+          type: string
+          example: Chocolat fourré pistache (Dubai Chocolate)
+        profil_aromatique:
+          type: array
+          description: Descripteurs sensoriels issus de la traduction des descriptions
+          items:
+            type: string
+          example: [pistache, grillé, gourmand, croquant]
+        verdict:
+          type: string
+          enum: [buzz, emergente, durable]
+        score_durabilite:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Calculé par le service data (croissance, persistance, nombre de sources et de pays)
+        score_opportunite:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Durabilité x pertinence pour Givaudan x timing
+        secteurs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Secteur'
+        pays:
+          type: array
+          items:
+            type: string
+          example: [AE, SA, FR, US]
+        sources:
+          type: array
+          description: Sources où la tendance est observée (données agrégées, jamais personnelles)
+          items:
+            type: string
+          example: [reddit, wikipedia, actualites, interne_echantillons]
+        explication:
+          type: string
+          description: Pourquoi ce verdict, rédigé par le modèle local
+        donnees_simulees:
+          type: boolean
+          description: true si la tendance vient du jeu de démonstration
+        maj_le:
+          type: string
+          format: date-time
+    PointHistorique:
+      type: object
+      required: [semaine, volume]
+      properties:
+        semaine:
+          type: string
+          format: date
+        volume:
+          type: integer
+          description: Somme des signaux de la semaine, toutes sources confondues
+        source:
+          type: string
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+        detail:
+          type: string
