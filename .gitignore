@@ -3,3 +3,4 @@ dist/
 .env
 db/data/
 .DS_Store
+.scratch/
