@@ -10,7 +10,7 @@
 - L'équipe data a livré son service RAG (FastAPI + ChromaDB + Ollama, dossier `rag/` sur la branche `data_ia`) avec son propre `rag/docker-compose.yml`. Résultat : deux fichiers compose dans le dépôt, et un membre data qui a lancé ce compose depuis le terminal du dev container, donc Docker dans Docker, ce qui échoue.
 - Ce second compose publiait open-webui sur le port 3000, déjà pris par notre API, et exposait le RAG via un tunnel ngrok dont l'URL change à chaque redémarrage (il a fallu la redemander pour chaque test).
 - Les membres data codent en Python sur leur machine, sans Node : le hook pre-commit (`npx lint-staged`) bloquait leurs commits.
-- Le premier lancement d'Ollama télécharge environ 1,3 Go de modèles (`qwen2.5:1.5b` et `nomic-embed-text`).
+- Le premier lancement du profil `ia` télécharge l'image `ollama/ollama` (2,9 Go, librairies GPU incluses) puis environ 1,3 Go de modèles (`qwen2.5:1.5b` et `nomic-embed-text`). Mesuré le 11 novembre sur le Mac du tech-lead : 32 minutes pour la seule image, et le disque plein en cours de route (Docker figé, images à reconstruire).
 
 ## Options
 
@@ -22,7 +22,7 @@
 
 Un seul `compose.yaml` à la racine, avec des profils. `docker compose up --build` lance la tranche interface → API → PostgreSQL sur http://localhost:8080 ; `docker compose --profile ia up --build` ajoute Ollama et le service RAG, joint par l'API sur `http://rag:8000` sans tunnel.
 
-Le RAG reste dans un profil tant que `rag/` n'est pas fusionné dans `develop` et testé : sans ce dossier, son build ferait échouer toute la commande, et la démo du m2 avec.
+Ollama et le RAG restent dans un profil pour deux raisons. D'abord le temps et l'espace disque : sans profil, `docker compose up` démarre en une à deux minutes sur une machine propre, contre plus d'une demi-heure et plus de 4 Go avec l'IA. Ensuite, le RAG reste dans ce profil tant que `rag/` n'est pas fusionné dans `develop` et testé : sans ce dossier, son build ferait échouer toute la commande, et la démo du m2 avec.
 
 Le modèle par défaut est `qwen2.5:1.5b`, celui du service data, pour n'en télécharger qu'un. Il se change avec la variable `LLM_MODEL`, sans toucher au code.
 
@@ -30,4 +30,5 @@ Le modèle par défaut est `qwen2.5:1.5b`, celui du service data, pour n'en tél
 
 - Positives : une commande pour le jury comme pour un nouvel arrivant. L'équipe data n'a plus besoin du dev container ni de Node : `docker compose --profile ia up rag` depuis le terminal de sa machine. Plus de ngrok en local, plus de conflit de port (open-webui passe sur 3001, Ollama n'est pas publié pour ne pas gêner un Ollama déjà installé).
 - Négatives acceptées : le `compose.yaml` devient plus long et mélange dev et démo. L'image `api` et l'image `web` refont chacune un `npm ci` (builds plus longs). Le premier lancement avec le profil `ia` prend plusieurs minutes (images + 1,3 Go de modèles). Les images `ollama/ollama`, `open-webui` et `ngrok` sont en `latest`, donc non figées. Le hook pre-commit est sauté sur une machine sans Node : seule la CI vérifie ces commits.
+- Pour la démo : le profil `ia` est lancé la veille sur la machine de présentation, avec au moins 10 Go libres, pour que l'image et les modèles soient en cache. Le relancer ensuite prend quelques secondes.
 - Condition de révision : quand le RAG est fusionné et a tourné sans erreur sur deux machines, on le sort du profil `ia` pour qu'il démarre par défaut. Si les images deviennent trop lentes à construire, on passera à une image de base commune pour `api` et `web`.
