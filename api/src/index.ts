@@ -68,5 +68,45 @@ server.post('/api/ai', async (req, res) => {
   res.json({ answer: data.choices[0]?.message.content ?? '' });
 });
 
+// Service data (FastAPI de l'équipe data) : URL dans api/.env (DATA_API_URL)
+server.post('/api/data/ask', async (req, res) => {
+  const question =
+    typeof req.body?.question === 'string' ? req.body.question.trim() : '';
+  if (!question) {
+    res.status(400).json({ error: 'Champ "question" manquant' });
+    return;
+  }
+
+  const { DATA_API_URL, DATA_API_KEY } = process.env;
+  if (!DATA_API_URL) {
+    res.status(500).json({ error: 'DATA_API_URL absent de api/.env' });
+    return;
+  }
+
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    // évite la page d'avertissement quand le service passe par un tunnel ngrok
+    'ngrok-skip-browser-warning': 'true',
+  };
+  if (DATA_API_KEY) headers.Authorization = `Bearer ${DATA_API_KEY}`;
+
+  const response = await fetch(`${DATA_API_URL}/ask`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ question }),
+    signal: AbortSignal.timeout(60_000),
+  });
+
+  if (!response.ok) {
+    res.status(502).json({
+      error: `Service data : ${response.status}`,
+      detail: await response.text(),
+    });
+    return;
+  }
+
+  res.json(await response.json());
+});
+
 // Sans hôte explicite, Node écoute sur toutes les interfaces
 server.listen(port, () => console.log(`API sur http://localhost:${port}`));

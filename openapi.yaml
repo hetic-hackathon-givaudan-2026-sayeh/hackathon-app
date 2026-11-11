@@ -94,6 +94,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /api/data/ask:
+    post:
+      tags: [setup]
+      summary: Transmet une question au service data (RAG de l'équipe data)
+      description: >
+        L'API Node relaie la question au service FastAPI de l'équipe data,
+        dont l'adresse est dans api/.env (DATA_API_URL). Le service retrouve
+        les passages pertinents puis le modèle local rédige la réponse.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [question]
+              properties:
+                question:
+                  type: string
+                  example: Qui est Léo ?
+      responses:
+        '200':
+          description: Réponse du service data, avec les passages utilisés
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [answer]
+                properties:
+                  question:
+                    type: string
+                  answer:
+                    type: string
+                  model:
+                    type: string
+                    example: qwen2.5:1.5b
+                  sources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        chapter:
+                          type: string
+                        text:
+                          type: string
+        '400':
+          description: Champ question manquant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: DATA_API_URL absent de api/.env
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '502':
+          description: Le service data a répondu en erreur
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/trends:
     get:
       tags: [tendances]
