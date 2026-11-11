@@ -1,0 +1,8 @@
+# Contexte de build des images api et web (docker compose) : on n'envoie que le code utile
+**/node_modules
+**/dist
+**/.env
+.git
+.scratch
+db/data
+rag

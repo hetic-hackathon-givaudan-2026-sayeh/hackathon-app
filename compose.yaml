@@ -1,20 +1,31 @@
 name: hackathon
 
+# Une seule commande pour lancer l'application (voir docs/adr/0004-une-commande-pour-tout-lancer.md) :
+#
+#   docker compose up --build                       db + api + web       → http://localhost:8080
+#   docker compose --profile ia up --build          + Ollama + service RAG des data (rag/)
+#   docker compose --profile outils up --build      + open-webui (port 3001) et tunnel ngrok
+#
+# Le service dev n'est démarré que par le dev container de VS Code (profil dev).
+
 services:
+  # --- Développement : le dev container de VS Code (.devcontainer/devcontainer.json) ---
   dev:
+    profiles: [dev]
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
     command: sleep infinity
     volumes:
       - .:/workspace:cached
-    # Permet de joindre Ollama installé sur la machine hôte (option 2 IA)
+    # Permet de joindre Ollama installé sur la machine hôte depuis le dev container
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     depends_on:
       db:
         condition: service_healthy
 
+  # --- Application : lancée par `docker compose up` ---
   db:
     image: postgres:17
     environment:
@@ -29,3 +40,142 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    environment:
+      DATABASE_URL: postgres://app:app@db:5432/app
+      # IA locale (ADR 0002) : Ollama du profil ia, joint par le réseau interne de compose
+      AI_BASE_URL: http://ollama:11434/v1
+      AI_MODEL: ${LLM_MODEL:-qwen2.5:1.5b}
+      AI_API_KEY: ollama
+      # Service RAG de l'équipe data (profil ia), plus besoin de tunnel ngrok en local
+      DATA_API_URL: http://rag:8000
+    ports:
+      - '3000:3000'
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    ports:
+      - '8080:80'
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  # --- IA locale : `docker compose --profile ia up` ---
+  ollama:
+    profiles: [ia, outils]
+    image: ollama/ollama:latest
+    # Pas de port publié : évite le conflit avec un Ollama déjà installé sur la machine (11434)
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      # L'image n'a pas curl : le CLI ollama sert de test
+      test: ['CMD', 'ollama', 'list']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  # Télécharge les modèles une seule fois (gardés dans le volume ollama_data), puis s'arrête
+  ollama-pull:
+    profiles: [ia, outils]
+    image: ollama/ollama:latest
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    entrypoint:
+      [
+        'sh',
+        '-c',
+        'ollama pull ${EMBED_MODEL:-nomic-embed-text} && ollama pull ${LLM_MODEL:-qwen2.5:1.5b}',
+      ]
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+  # Service RAG de l'équipe data (FastAPI + ChromaDB), code dans rag/
+  rag:
+    profiles: [ia, outils]
+    build: ./rag
+    env_file:
+      - path: rag/.env
+        required: false
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      CHROMA_DIR: /app/chroma_db
+      LLM_MODEL: ${LLM_MODEL:-qwen2.5:1.5b}
+      EMBED_MODEL: ${EMBED_MODEL:-nomic-embed-text}
+    ports:
+      - '8000:8000'
+    volumes:
+      - chroma_data:/app/chroma_db
+      - ./rag/data:/app/data
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'python',
+          '-c',
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      # L'ingestion des documents tourne avant le démarrage de l'API
+      start_period: 120s
+    depends_on:
+      ollama:
+        condition: service_healthy
+      ollama-pull:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  # --- Outils de l'équipe data : `docker compose --profile outils up` ---
+  open-webui:
+    profiles: [outils]
+    image: ghcr.io/open-webui/open-webui:main
+    environment:
+      OLLAMA_BASE_URL: http://ollama:11434
+    ports:
+      # 3001 et pas 3000 : le port 3000 est celui de l'API
+      - '3001:8080'
+    volumes:
+      - open-webui:/app/backend/data
+    depends_on:
+      - ollama
+    restart: unless-stopped
+
+  # Tunnel public vers le service RAG, seulement si NGROK_AUTHTOKEN est défini dans .env (racine)
+  ngrok:
+    profiles: [outils]
+    image: ngrok/ngrok:latest
+    entrypoint:
+      - sh
+      - -c
+      - |
+        if [ -z "$$NGROK_AUTHTOKEN" ]; then
+          echo "NGROK_AUTHTOKEN absent de .env : tunnel ngrok désactivé."
+          exit 0
+        fi
+        exec ngrok http rag:8000 --config=/var/lib/ngrok/ngrok.yml --log=stdout $${NGROK_DOMAIN:+--url=$$NGROK_DOMAIN}
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN:-}
+      NGROK_DOMAIN: ${NGROK_DOMAIN:-}
+    ports:
+      - '4040:4040'
+    depends_on:
+      - rag
+    restart: on-failure
+
+volumes:
+  ollama_data:
+  chroma_data:
+  open-webui:
