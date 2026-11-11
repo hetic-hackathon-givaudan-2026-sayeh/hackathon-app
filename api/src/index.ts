@@ -13,6 +13,19 @@ const server = express();
 server.use(express.json());
 const port = Number(process.env.PORT) || 3000;
 
+// Si Ollama ou le service RAG ne tourne pas (profil ia non lancé), fetch lève une exception :
+// on renvoie une 503 lisible au lieu d'une erreur 500 et d'une stack trace dans les logs.
+async function appeler(
+  url: string,
+  init: RequestInit,
+): Promise<Response | null> {
+  try {
+    return await fetch(url, init);
+  } catch {
+    return null;
+  }
+}
+
 server.get('/api/health', async (_req, res) => {
   const result = await pool.query('select version() as v');
   res.json({ status: 'ok', db: result.rows[0].v });
@@ -42,7 +55,7 @@ server.post('/api/ai', async (req, res) => {
     return;
   }
 
-  const response = await fetch(`${AI_BASE_URL}/chat/completions`, {
+  const response = await appeler(`${AI_BASE_URL}/chat/completions`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -53,6 +66,14 @@ server.post('/api/ai', async (req, res) => {
       messages: [{ role: 'user', content: prompt }],
     }),
   });
+
+  if (!response) {
+    res.status(503).json({
+      error:
+        'IA locale injoignable : lancer docker compose --profile ia up (ou Ollama sur la machine en dev)',
+    });
+    return;
+  }
 
   if (!response.ok) {
     res.status(502).json({
@@ -90,12 +111,20 @@ server.post('/api/data/ask', async (req, res) => {
   };
   if (DATA_API_KEY) headers.Authorization = `Bearer ${DATA_API_KEY}`;
 
-  const response = await fetch(`${DATA_API_URL}/ask`, {
+  const response = await appeler(`${DATA_API_URL}/ask`, {
     method: 'POST',
     headers,
     body: JSON.stringify({ question }),
     signal: AbortSignal.timeout(60_000),
   });
+
+  if (!response) {
+    res.status(503).json({
+      error:
+        'Service data injoignable ou trop lent : lancer docker compose --profile ia up',
+    });
+    return;
+  }
 
   if (!response.ok) {
     res.status(502).json({
