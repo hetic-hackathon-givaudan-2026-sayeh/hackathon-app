@@ -1,0 +1,423 @@
+[
+  {
+    "id": "food_yuzu",
+    "label": "Yuzu",
+    "sector": "food_beverage",
+    "category": "agrumes",
+    "query_terms": {
+      "google_trends": [
+        "yuzu"
+      ],
+      "wikipedia_pageviews": [
+        {
+          "project": "en.wikipedia",
+          "article": "Yuzu"
+        },
+        {
+          "project": "fr.wikipedia",
+          "article": "Yuzu"
+        },
+        {
+          "project": "ja.wikipedia",
+          "article": "ユズ"
+        }
+      ],
+      "reddit": [
+        "yuzu"
+      ],
+      "open_food_facts": [
+        "yuzu"
+      ],
+      "gdelt": [
+        "yuzu"
+      ],
+      "openalex": [
+        "yuzu",
+        "Citrus junos"
+      ],
+      "rss_trade_press": [
+        "yuzu"
+      ]
+    },
+    "profile": {
+      "price_tier": "premium",
+      "target_segments": [
+        "millennials",
+        "foodies"
+      ],
+      "target_age_range": [
+        25,
+        45
+      ],
+      "claim_types": [
+        "naturel",
+        "origine",
+        "exotique"
+      ],
+      "estimated": true
+    }
+  },
+  {
+    "id": "food_matcha",
+    "label": "Matcha",
+    "sector": "food_beverage",
+    "category": "the",
+    "query_terms": {
+      "google_trends": [
+        "matcha"
+      ],
+      "wikipedia_pageviews": [
+        {
+          "project": "en.wikipedia",
+          "article": "Matcha"
+        },
+        {
+          "project": "fr.wikipedia",
+          "article": "Matcha"
+        },
+        {
+          "project": "ja.wikipedia",
+          "article": "抹茶"
+        }
+      ],
+      "reddit": [
+        "matcha"
+      ],
+      "open_food_facts": [
+        "matcha"
+      ],
+      "gdelt": [
+        "matcha"
+      ],
+      "openalex": [
+        "matcha"
+      ],
+      "rss_trade_press": [
+        "matcha"
+      ]
+    },
+    "profile": {
+      "price_tier": "masstige",
+      "target_segments": [
+        "gen_z",
+        "millennials",
+        "bien_etre"
+      ],
+      "target_age_range": [
+        18,
+        40
+      ],
+      "claim_types": [
+        "bien_etre",
+        "naturel",
+        "energie"
+      ],
+      "estimated": true
+    }
+  },
+  {
+    "id": "food_hojicha",
+    "label": "Hojicha",
+    "sector": "food_beverage",
+    "category": "the",
+    "query_terms": {
+      "google_trends": [
+        "hojicha"
+      ],
+      "wikipedia_pageviews": [
+        {
+          "project": "en.wikipedia",
+          "article": "Hōjicha"
+        },
+        {
+          "project": "ja.wikipedia",
+          "article": "ほうじ茶"
+        }
+      ],
+      "reddit": [
+        "hojicha"
+      ],
+      "open_food_facts": [
+        "hojicha"
+      ],
+      "gdelt": [
+        "hojicha",
+        "houjicha"
+      ],
+      "openalex": [
+        "hojicha",
+        "houjicha"
+      ],
+      "rss_trade_press": [
+        "hojicha",
+        "houjicha"
+      ]
+    },
+    "profile": {
+      "price_tier": "premium",
+      "target_segments": [
+        "foodies",
+        "millennials"
+      ],
+      "target_age_range": [
+        25,
+        45
+      ],
+      "claim_types": [
+        "naturel",
+        "origine",
+        "faible_cafeine"
+      ],
+      "estimated": true
+    }
+  },
+  {
+    "id": "food_dubai_chocolate",
+    "label": "Dubai Chocolate",
+    "sector": "food_beverage",
+    "category": "confiserie",
+    "query_terms": {
+      "google_trends": [
+        "dubai chocolate"
+      ],
+      "wikipedia_pageviews": [
+        {
+          "project": "en.wikipedia",
+          "article": "Dubai chocolate"
+        }
+      ],
+      "reddit": [
+        "dubai chocolate"
+      ],
+      "open_food_facts": [
+        "dubai chocolate"
+      ],
+      "gdelt": [
+        "dubai chocolate"
+      ],
+      "openalex": [
+        "dubai chocolate"
+      ],
+      "rss_trade_press": [
+        "dubai chocolate"
+      ]
+    },
+    "profile": {
+      "price_tier": "premium",
+      "target_segments": [
+        "gen_z",
+        "indulgence"
+      ],
+      "target_age_range": [
+        16,
+        35
+      ],
+      "claim_types": [
+        "indulgence",
+        "viral",
+        "texture"
+      ],
+      "estimated": true
+    }
+  },
+  {
+    "id": "beauty_centella",
+    "label": "Centella asiatica (cica)",
+    "sector": "beauty",
+    "category": "soin_visage",
+    "query_terms": {
+      "google_trends": [
+        "centella asiatica",
+        "cica cream"
+      ],
+      "wikipedia_pageviews": [
+        {
+          "project": "en.wikipedia",
+          "article": "Centella asiatica"
+        }
+      ],
+      "reddit": [
+        "centella",
+        "cica"
+      ],
+      "open_beauty_facts": [
+        "centella"
+      ],
+      "gdelt": [
+        "centella asiatica",
+        "cica"
+      ],
+      "openalex": [
+        "centella asiatica"
+      ],
+      "rss_trade_press": [
+        "centella",
+        "cica"
+      ]
+    },
+    "profile": {
+      "price_tier": "masstige",
+      "target_segments": [
+        "peau_sensible",
+        "k_beauty"
+      ],
+      "target_age_range": [
+        18,
+        40
+      ],
+      "claim_types": [
+        "apaisant",
+        "naturel",
+        "reparation"
+      ],
+      "estimated": true
+    },
+    "notes": "Actif d'esprit K-beauty propose par l'equipe Data, a confirmer."
+  },
+  {
+    "id": "beauty_snail_mucin",
+    "label": "Snail mucin",
+    "sector": "beauty",
+    "category": "soin_visage",
+    "query_terms": {
+      "google_trends": [
+        "snail mucin"
+      ],
+      "wikipedia_pageviews": [
+        {
+          "project": "en.wikipedia",
+          "article": "Snail slime"
+        }
+      ],
+      "reddit": [
+        "snail mucin"
+      ],
+      "open_beauty_facts": [
+        "snail"
+      ],
+      "gdelt": [
+        "snail mucin"
+      ],
+      "openalex": [
+        "snail mucin",
+        "snail secretion filtrate"
+      ],
+      "rss_trade_press": [
+        "snail mucin",
+        "snail secretion"
+      ]
+    },
+    "profile": {
+      "price_tier": "masstige",
+      "target_segments": [
+        "gen_z",
+        "k_beauty"
+      ],
+      "target_age_range": [
+        16,
+        35
+      ],
+      "claim_types": [
+        "hydratation",
+        "reparation",
+        "viral"
+      ],
+      "estimated": true
+    },
+    "notes": "Actif d'esprit K-beauty propose par l'equipe Data, a confirmer."
+  },
+  {
+    "id": "beauty_rice",
+    "label": "Rice extract (riz)",
+    "sector": "beauty",
+    "category": "soin_visage",
+    "query_terms": {
+      "google_trends": [
+        "rice toner",
+        "rice skincare"
+      ],
+      "wikipedia_pageviews": [],
+      "reddit": [
+        "rice toner",
+        "rice water skin"
+      ],
+      "open_beauty_facts": [
+        "rice"
+      ],
+      "gdelt": [
+        "rice toner",
+        "rice skincare"
+      ],
+      "openalex": [
+        "rice toner",
+        "rice skincare"
+      ],
+      "rss_trade_press": [
+        "rice toner",
+        "rice water"
+      ]
+    },
+    "profile": {
+      "price_tier": "mass",
+      "target_segments": [
+        "k_beauty",
+        "eclat"
+      ],
+      "target_age_range": [
+        18,
+        40
+      ],
+      "claim_types": [
+        "eclat",
+        "naturel",
+        "hydratation"
+      ],
+      "estimated": true
+    },
+    "notes": "Actif d'esprit K-beauty propose par l'equipe Data, a confirmer. Pas de page Wikipedia retenue."
+  },
+  {
+    "id": "fragrance_yuzu_note",
+    "label": "Note olfactive yuzu",
+    "sector": "fragrance",
+    "category": "hesperide",
+    "query_terms": {
+      "google_trends": [
+        "yuzu perfume"
+      ],
+      "wikipedia_pageviews": [],
+      "reddit": [
+        "yuzu"
+      ],
+      "gdelt": [
+        "yuzu perfume",
+        "yuzu fragrance"
+      ],
+      "rss_trade_press": [
+        "yuzu"
+      ],
+      "open_beauty_facts": [
+        "yuzu"
+      ]
+    },
+    "profile": {
+      "price_tier": "premium",
+      "target_segments": [
+        "niche",
+        "unisexe"
+      ],
+      "target_age_range": [
+        25,
+        50
+      ],
+      "claim_types": [
+        "fraicheur",
+        "naturel",
+        "origine"
+      ],
+      "estimated": true
+    },
+    "to_confirm": true,
+    "notes": "Tendance fragrance a confirmer par l'equipe. Sources fragrance faibles."
+  }
+]

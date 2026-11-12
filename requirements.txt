@@ -1,0 +1,23 @@
+# Stack demandee
+fastapi
+uvicorn
+pydantic>=2
+sqlalchemy>=2
+apscheduler
+pytrends
+requests
+pytest
+
+# Calcul et calendrier (autorises en phase B et C)
+numpy
+scipy
+statsmodels
+holidays
+
+# Dependances techniques imposees par la stack (pas de nouvelle technologie)
+# psycopg : pilote PostgreSQL 16 pour SQLAlchemy
+# pandas : requis par pytrends
+# httpx : requis par fastapi.testclient pour les tests
+psycopg[binary]
+pandas
+httpx

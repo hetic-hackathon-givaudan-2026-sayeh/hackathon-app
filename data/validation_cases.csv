@@ -1,0 +1,11 @@
+term,sector,label,as_of_date,notes,market
+matcha,food_beverage,durable,,TODO equipe : renseigner as_of_date,
+oat milk,food_beverage,durable,,TODO equipe : renseigner as_of_date,
+kombucha,food_beverage,durable,,TODO equipe : renseigner as_of_date,
+yuzu,food_beverage,durable,,TODO equipe : renseigner as_of_date (cas de comparaison yuzu en France),FR
+dalgona coffee,food_beverage,buzz,,TODO equipe : renseigner as_of_date,
+cloud bread,food_beverage,buzz,,TODO equipe : renseigner as_of_date,
+pumpkin spice,food_beverage,seasonal,,TODO equipe : renseigner as_of_date,
+dubai chocolate,food_beverage,buzz,2023-12,"Cite par l'equipe : buzz au 2023-12. Date au mois, lue comme le 31 decembre 2023.",
+k-beauty,beauty,,,TODO equipe : renseigner label et as_of_date (cas de comparaison v1 v2),
+TODO,,,,Cas supplementaires a fournir par l'equipe (beauty et fragrance inclus),

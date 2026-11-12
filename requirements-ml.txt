@@ -1,0 +1,4 @@
+# Extras optionnels (phase F, prediction). Sans eux, /api/predict repond 501.
+-r requirements.txt
+scikit-learn
+ruptures

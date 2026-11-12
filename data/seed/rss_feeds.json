@@ -1,0 +1,15 @@
+{
+  "note": "Flux verifies accessibles le 2026-11-12 (HTTP 200, format RSS). enabled=false tant que l'equipe n'a pas verifie les conditions d'utilisation de chaque flux. Seuls titre tronque, lien et date sont stockes.",
+  "feeds": [
+    {"name": "foodnavigator", "url": "https://www.foodnavigator.com/arc/outboundfeeds/rss/", "sector": "food_beverage", "language": "en", "enabled": false},
+    {"name": "foodnavigator_usa", "url": "https://www.foodnavigator-usa.com/arc/outboundfeeds/rss/", "sector": "food_beverage", "language": "en", "enabled": false},
+    {"name": "foodnavigator_asia", "url": "https://www.foodnavigator-asia.com/arc/outboundfeeds/rss/", "sector": "food_beverage", "language": "en", "enabled": false},
+    {"name": "beveragedaily", "url": "https://www.beveragedaily.com/arc/outboundfeeds/rss/", "sector": "food_beverage", "language": "en", "enabled": false},
+    {"name": "fooddive", "url": "https://www.fooddive.com/feeds/news/", "sector": "food_beverage", "language": "en", "enabled": false},
+    {"name": "foodbusinessnews", "url": "https://www.foodbusinessnews.net/rss/articles", "sector": "food_beverage", "language": "en", "enabled": false},
+    {"name": "cosmeticsbusiness", "url": "https://www.cosmeticsbusiness.com/rss", "sector": "beauty", "language": "en", "enabled": false},
+    {"name": "personalcaremagazine", "url": "https://www.personalcaremagazine.com/rss", "sector": "beauty", "language": "en", "enabled": false},
+    {"name": "premiumbeautynews", "url": "https://www.premiumbeautynews.com/spip.php?page=backend", "sector": "beauty", "language": "en", "enabled": false},
+    {"name": "perfumerflavorist", "url": "https://www.perfumerflavorist.com/rss", "sector": "fragrance", "language": "en", "enabled": false}
+  ]
+}

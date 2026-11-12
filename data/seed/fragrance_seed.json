@@ -1,0 +1,12 @@
+{
+  "data_origin": "simule",
+  "warning": "Echantillon SIMULE saisi a la main pour faire tourner le secteur fragrance. Ne represente aucune donnee de marche reelle.",
+  "rows": [
+    {"trend_id": "fragrance_yuzu_note", "market": "FR", "week": "2026-08-03", "source_type": "lancement_produit", "signal_volume": 1, "sector_data": {"olfactive_family": "hesperide", "olfactive_note": "yuzu", "note_position": "tete", "launch_count_fine": 1, "launch_count_mass": 0, "launch_segment": "niche"}},
+    {"trend_id": "fragrance_yuzu_note", "market": "FR", "week": "2026-09-07", "source_type": "lancement_produit", "signal_volume": 2, "sector_data": {"olfactive_family": "hesperide", "olfactive_note": "yuzu", "note_position": "tete", "launch_count_fine": 1, "launch_count_mass": 1, "launch_segment": "masstige"}},
+    {"trend_id": "fragrance_yuzu_note", "market": "JP", "week": "2026-07-06", "source_type": "lancement_produit", "signal_volume": 1, "sector_data": {"olfactive_family": "hesperide", "olfactive_note": "yuzu", "note_position": "tete", "launch_count_fine": 1, "launch_count_mass": 0, "launch_segment": "niche", "ingredient_origin": "JP"}},
+    {"trend_id": "fragrance_yuzu_note", "market": "JP", "week": "2026-10-05", "source_type": "lancement_produit", "signal_volume": 1, "sector_data": {"olfactive_family": "hesperide", "olfactive_note": "yuzu", "note_position": "coeur", "launch_count_fine": 0, "launch_count_mass": 1, "launch_segment": "mass"}},
+    {"trend_id": "fragrance_yuzu_note", "market": "US", "week": "2026-09-14", "source_type": "presse_professionnelle", "signal_volume": 3, "sector_data": {"olfactive_note": "yuzu", "press_mention_count": 3}},
+    {"trend_id": "fragrance_yuzu_note", "market": "FR", "week": "2026-10-12", "source_type": "presse_professionnelle", "signal_volume": 2, "sector_data": {"olfactive_note": "yuzu", "press_mention_count": 2}}
+  ]
+}

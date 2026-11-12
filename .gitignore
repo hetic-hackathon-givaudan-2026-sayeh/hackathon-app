@@ -1,5 +1,10 @@
-node_modules/
-dist/
+.venv/
+__pycache__/
+.pytest_cache/
 .env
-db/data/
+data/trendpulse.db
+data/cache/
+data/backtest_report.json
 .DS_Store
+# Fichiers clients (ventes reelles) : jamais versionnes
+data/import/*.csv
