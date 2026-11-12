@@ -1,1 +1,8 @@
+# ESLint + Prettier sur les fichiers commités.
+# Sans Node ni node_modules (équipe data qui code en Python sur sa machine), on ne bloque pas :
+# la CI `qualite` refait les mêmes vérifications sur chaque pull request.
+if ! command -v npx >/dev/null 2>&1 || [ ! -d node_modules ]; then
+  echo "pre-commit : Node absent, ESLint et Prettier sautés (la CI qualite vérifiera la PR)"
+  exit 0
+fi
 npx lint-staged

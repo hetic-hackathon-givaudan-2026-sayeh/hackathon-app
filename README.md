@@ -33,7 +33,29 @@ Les choix sont expliqués dans `docs/adr/`.
 - **VS Code** avec l'extension **Dev Containers** (`ms-vscode-remote.remote-containers`)
 - **Windows** : activer le moteur WSL 2 dans Docker Desktop et cloner le projet **dans WSL** (par exemple `~/projets`), pas dans `C:\`
 
-## Démarrer en 3 étapes
+## Lancer l'application (une commande)
+
+Il suffit de Docker, pas besoin de VS Code ni de Node :
+
+```bash
+git clone https://github.com/hetic-hackathon-givaudan-2026-sayeh/hackathon-app.git
+cd hackathon-app
+docker compose up --build
+```
+
+Ouvrir http://localhost:8080 : le front, l'API et PostgreSQL tournent dans des conteneurs.
+
+| Commande                                     | Ce qui démarre                                                          |
+| -------------------------------------------- | ----------------------------------------------------------------------- |
+| `docker compose up --build`                  | `db`, `api` (port 3000), `web` (port 8080)                              |
+| `docker compose --profile ia up --build`     | en plus : Ollama et le service RAG de l'équipe data (`rag/`, port 8000) |
+| `docker compose --profile outils up --build` | en plus : open-webui (port 3001) et le tunnel ngrok                     |
+
+Premier lancement avec le profil `ia` : l'image `ollama/ollama` pèse 2,9 Go et les modèles environ 1,3 Go (gardés ensuite dans un volume). Prévoir au moins 10 Go libres et, sur un réseau lent, plus de 30 minutes : le lancer en avance, jamais juste avant une démo. Les lancements suivants prennent quelques secondes. Le choix d'un seul compose avec des profils est expliqué dans `docs/adr/0004-une-commande-pour-tout-lancer.md`.
+
+**Équipe data** : pas besoin du dev container. Depuis le terminal de votre machine, à la racine du dépôt : `docker compose --profile ia up --build rag`. Le hook pre-commit ne vous bloque pas si Node n'est pas installé ; la CI vérifie la PR.
+
+## Développer dans le dev container (3 étapes)
 
 1. **Cloner et ouvrir**
 

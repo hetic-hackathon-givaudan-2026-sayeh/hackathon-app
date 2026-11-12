@@ -4,7 +4,8 @@ Consignes pour tout assistant de code (Copilot, Codex, Cursor…) sur ce dépôt
 
 ## Lancer
 
-- Tout se lance dans le dev container (`.devcontainer/`), jamais sur la machine hôte : `node_modules` est installé pour Linux, `npm` lancé hors du conteneur casse `esbuild` et `rolldown`.
+- Démo et test d'intégration : `docker compose up --build` (front sur http://localhost:8080) ; `--profile ia` ajoute Ollama et le service RAG (`rag/`). Voir ADR 0004.
+- Le développement Node se fait dans le dev container (`.devcontainer/`, service `dev` du profil `dev`), jamais sur la machine hôte : `node_modules` est installé pour Linux, `npm` lancé hors du conteneur casse `esbuild` et `rolldown`.
 - `npm run dev` lance l'API (`api/`, port 3000) et le front (`web/`, port 5173).
 - Base : `psql postgres://app:app@db:5432/app`. Le schéma et les données de test sont dans `db/init/`, rejoués seulement si `db/data/` est vide.
 - Avant de dire « fini », ces trois commandes doivent passer (ce sont celles du job CI `qualite`) : `npm run lint`, `npm run format:check`, `npm run build`.
@@ -19,7 +20,7 @@ Consignes pour tout assistant de code (Copilot, Codex, Cursor…) sur ce dépôt
 
 - Lire `docs/adr/` avant toute proposition d'architecture. Ne pas contredire un ADR au statut « acceptée ».
 - Pour changer une décision (base, fournisseur d'IA, framework), proposer un nouvel ADR à partir de `docs/adr/0000-modele.md`, puis s'arrêter et attendre la validation.
-- `0001` : stack Node/TypeScript, Express, Vite, PostgreSQL 17. `0002` : IA locale uniquement.
+- `0001` : stack Node/TypeScript, Express, Vite, PostgreSQL 17. `0002` : IA locale uniquement. `0003` : contrat d'API (`openapi.yaml`). `0004` : un seul `compose.yaml` avec des profils.
 
 ## À ne pas faire
 
