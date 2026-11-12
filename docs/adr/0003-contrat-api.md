@@ -20,7 +20,8 @@
 ## Décision
 
 - Le contrat entre le front et l'API est décrit dans `openapi.yaml`, à la racine du dépôt. Toute nouvelle route ou tout changement de format passe d'abord par ce fichier, dans la même PR que le code.
-- Le service data ne parle pas au front : il écrit les tendances, leurs scores et l'historique des signaux dans PostgreSQL. Les colonnes suivent les schémas `Tendance` et `PointHistorique` de `openapi.yaml`, pour que l'API n'ait presque rien à transformer.
+- Le service data ne parle pas au front : il écrit les tendances, leurs scores et l'historique des signaux dans PostgreSQL, dans les tables `tendances`, `criteres` et `signaux` (`db/init/003-tendances.sql`). Les colonnes suivent les schémas `Tendance`, `Critere`, `FenetreTir` et `PointHistorique` de `openapi.yaml`, pour que l'API n'ait presque rien à transformer.
+- Mise à jour du 12 novembre, après la fiche produit des PM : le score est décomposé par critère (poids et source visibles, `NULL` tant que l'équipe ne les a pas fixés) et chaque tendance porte sa fenêtre de tir (délai avant le marché cible, temps de cycle Givaudan, verdict go / urgence / no-go). Le jeu de démo (`db/init/004-tendances-demo.sql`, cas yuzu Japon → France) remplit ce format en attendant le service data.
 - L'API Node ne calcule aucun score : elle lit, filtre (`secteur`, `limit`) et appelle le modèle local uniquement pour `POST /api/trends/{id}/argumentaire`.
 - Chaque tendance porte `donnees_simulees` : la démo annonce ce qui vient du jeu de démonstration.
 
