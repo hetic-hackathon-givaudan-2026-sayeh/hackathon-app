@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" width="1000" height="640" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="640" fill="#ffffff"/>
+  <text x="500" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#0f172a">TrendPulse : architecture globale</text>
+
+  <!-- Sources externes -->
+  <rect x="20" y="60" width="210" height="520" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="125" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#1e3a8a">Sources de données</text>
+  <g font-size="12.5" fill="#1e293b">
+    <rect x="36" y="100" width="178" height="30" rx="6" fill="#fff" stroke="#93c5fd"/><text x="125" y="120" text-anchor="middle">Google Trends (social)</text>
+    <rect x="36" y="138" width="178" height="30" rx="6" fill="#fff" stroke="#93c5fd"/><text x="125" y="158" text-anchor="middle">GDELT (presse générale)</text>
+    <rect x="36" y="176" width="178" height="30" rx="6" fill="#fff" stroke="#93c5fd"/><text x="125" y="196" text-anchor="middle">OpenAlex (recherche)</text>
+    <rect x="36" y="214" width="178" height="30" rx="6" fill="#fff" stroke="#93c5fd"/><text x="125" y="234" text-anchor="middle">Flux RSS presse pro</text>
+    <rect x="36" y="252" width="178" height="30" rx="6" fill="#fff" stroke="#93c5fd"/><text x="125" y="272" text-anchor="middle">Open Food Facts</text>
+    <rect x="36" y="290" width="178" height="30" rx="6" fill="#fff" stroke="#93c5fd"/><text x="125" y="310" text-anchor="middle">Open Beauty Facts</text>
+    <rect x="36" y="328" width="178" height="30" rx="6" fill="#fff" stroke="#93c5fd"/><text x="125" y="348" text-anchor="middle">Wikipedia Pageviews</text>
+    <rect x="36" y="366" width="178" height="30" rx="6" fill="#fff" stroke="#93c5fd"/><text x="125" y="386" text-anchor="middle">Import CSV client</text>
+    <rect x="36" y="404" width="178" height="30" rx="6" fill="#fff" stroke="#93c5fd" stroke-dasharray="4 3"/><text x="125" y="424" text-anchor="middle">fragrance_seed (simulé)</text>
+    <rect x="36" y="442" width="178" height="30" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 3"/><text x="125" y="462" text-anchor="middle" fill="#64748b">Reddit, X, EFSA… (off)</text>
+  </g>
+  <text x="125" y="505" text-anchor="middle" font-size="11.5" fill="#334155">APIs publiques uniquement,</text>
+  <text x="125" y="521" text-anchor="middle" font-size="11.5" fill="#334155">aucun scraping.</text>
+  <text x="125" y="545" text-anchor="middle" font-size="11.5" fill="#334155">Panne d'une source =</text>
+  <text x="125" y="561" text-anchor="middle" font-size="11.5" fill="#334155">« indisponible », jamais 0</text>
+
+  <!-- Docker -->
+  <rect x="260" y="60" width="480" height="520" rx="12" fill="#f8fafc" stroke="#64748b" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="500" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">docker compose (Mac de l'équipe Data)</text>
+
+  <!-- Worker -->
+  <rect x="280" y="104" width="440" height="186" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="500" y="128" text-anchor="middle" font-size="14.5" font-weight="700" fill="#065f46">worker : python run.py worker</text>
+  <text x="500" y="147" text-anchor="middle" font-size="11.5" fill="#065f46">scheduler APScheduler (collecte 5 h UTC, digest lundi 7 h) + file de runs</text>
+  <g font-size="11.5" fill="#064e3b">
+    <rect x="296" y="160" width="96" height="26" rx="5" fill="#fff" stroke="#6ee7b7"/><text x="344" y="177" text-anchor="middle">collect</text>
+    <rect x="400" y="160" width="96" height="26" rx="5" fill="#fff" stroke="#6ee7b7"/><text x="448" y="177" text-anchor="middle">normalize</text>
+    <rect x="504" y="160" width="96" height="26" rx="5" fill="#fff" stroke="#6ee7b7"/><text x="552" y="177" text-anchor="middle">durability</text>
+    <rect x="608" y="160" width="96" height="26" rx="5" fill="#fff" stroke="#6ee7b7"/><text x="656" y="177" text-anchor="middle">timing</text>
+    <rect x="296" y="196" width="96" height="26" rx="5" fill="#fff" stroke="#6ee7b7"/><text x="344" y="213" text-anchor="middle">match_clients</text>
+    <rect x="400" y="196" width="96" height="26" rx="5" fill="#fff" stroke="#6ee7b7"/><text x="448" y="213" text-anchor="middle">alert</text>
+    <rect x="504" y="196" width="96" height="26" rx="5" fill="#fff" stroke="#6ee7b7"/><text x="552" y="213" text-anchor="middle">recommend</text>
+    <rect x="608" y="196" width="96" height="26" rx="5" fill="#fff" stroke="#6ee7b7"/><text x="656" y="213" text-anchor="middle">narrate</text>
+  </g>
+  <text x="500" y="248" text-anchor="middle" font-size="11.5" fill="#065f46">collect.py · scoring.py · analytics.py · pipeline.py</text>
+  <text x="500" y="266" text-anchor="middle" font-size="11.5" fill="#065f46">Un run = 8 steps, chaque step lit et écrit en base</text>
+
+  <!-- DB -->
+  <rect x="280" y="318" width="195" height="150" rx="10" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+  <ellipse cx="378" cy="350" rx="60" ry="12" fill="#fed7aa" stroke="#f97316"/>
+  <text x="378" y="390" text-anchor="middle" font-size="14.5" font-weight="700" fill="#7c2d12">PostgreSQL 16</text>
+  <text x="378" y="410" text-anchor="middle" font-size="11.5" fill="#7c2d12">20 tables, append-only</text>
+  <text x="378" y="427" text-anchor="middle" font-size="11.5" fill="#7c2d12">vues agent_v_* (lecture seule)</text>
+  <text x="378" y="444" text-anchor="middle" font-size="11.5" fill="#7c2d12">rôle agent_ro : SELECT seul</text>
+
+  <!-- API -->
+  <rect x="525" y="318" width="195" height="150" rx="10" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
+  <text x="622" y="346" text-anchor="middle" font-size="14.5" font-weight="700" fill="#4c1d95">API FastAPI</text>
+  <text x="622" y="366" text-anchor="middle" font-size="11.5" fill="#4c1d95">api.py · port 8000</text>
+  <text x="622" y="386" text-anchor="middle" font-size="11.5" fill="#4c1d95">clé X-API-Key</text>
+  <text x="622" y="406" text-anchor="middle" font-size="11.5" fill="#4c1d95">dashboard, trends, matches,</text>
+  <text x="622" y="423" text-anchor="middle" font-size="11.5" fill="#4c1d95">recommandations, pitch,</text>
+  <text x="622" y="440" text-anchor="middle" font-size="11.5" fill="#4c1d95">agent, what-if, runs…</text>
+
+  <!-- Agent box -->
+  <rect x="280" y="490" width="440" height="70" rx="10" fill="#fdf4ff" stroke="#d946ef" stroke-width="1.5"/>
+  <text x="500" y="515" text-anchor="middle" font-size="14" font-weight="700" fill="#701a75">agent.py : pitch, synthèses, chat</text>
+  <text x="500" y="535" text-anchor="middle" font-size="11.5" fill="#701a75">14 outils en lecture seule · contrôle RG18 (aucun chiffre inventé)</text>
+  <text x="500" y="551" text-anchor="middle" font-size="11.5" fill="#701a75">repli automatique sur template si le LLM échoue</text>
+
+  <!-- Ollama -->
+  <rect x="770" y="490" width="210" height="70" rx="10" fill="#fefce8" stroke="#eab308" stroke-width="1.5"/>
+  <text x="875" y="517" text-anchor="middle" font-size="14" font-weight="700" fill="#713f12">Ollama (hôte)</text>
+  <text x="875" y="537" text-anchor="middle" font-size="11.5" fill="#713f12">qwen2.5:1.5b · local, gratuit</text>
+
+  <!-- ngrok + front -->
+  <rect x="770" y="318" width="210" height="64" rx="10" fill="#f1f5f9" stroke="#475569" stroke-width="1.5"/>
+  <text x="875" y="345" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">ngrok</text>
+  <text x="875" y="364" text-anchor="middle" font-size="11.5" fill="#334155">tunnel HTTPS public</text>
+  <rect x="770" y="104" width="210" height="110" rx="10" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="875" y="132" text-anchor="middle" font-size="14.5" font-weight="700" fill="#0c4a6e">Front web</text>
+  <text x="875" y="152" text-anchor="middle" font-size="11.5" fill="#0c4a6e">équipe front</text>
+  <text x="875" y="178" text-anchor="middle" font-size="12" fill="#0c4a6e">Commercial Givaudan :</text>
+  <text x="875" y="196" text-anchor="middle" font-size="12" font-style="italic" fill="#0c4a6e">qui appeler, pourquoi, quoi dire</text>
+
+  <!-- arrows -->
+  <line x1="230" y1="200" x2="278" y2="200" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="378" y1="290" x2="378" y2="316" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="477" y1="393" x2="523" y2="393" stroke="#475569" stroke-width="2" marker-end="url(#arr)" marker-start="url(#arr)"/>
+  <line x1="722" y1="350" x2="768" y2="350" stroke="#475569" stroke-width="2" marker-end="url(#arr)" marker-start="url(#arr)"/>
+  <line x1="875" y1="316" x2="875" y2="216" stroke="#475569" stroke-width="2" marker-end="url(#arr)" marker-start="url(#arr)"/>
+  <line x1="622" y1="470" x2="622" y2="488" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="722" y1="525" x2="768" y2="525" stroke="#475569" stroke-width="2" marker-end="url(#arr)" marker-start="url(#arr)"/>
+  <text x="500" y="610" text-anchor="middle" font-size="12" fill="#475569">Flèches : flux de données. Le LLM ne touche jamais la base en écriture et ne génère aucun SQL.</text>
+</svg>
