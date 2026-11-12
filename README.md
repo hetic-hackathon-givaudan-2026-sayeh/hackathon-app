@@ -7,7 +7,6 @@ Projet groupe 20, Givaudan AI Challenge, sujet 3 (HETIC), rôle Data. Le référ
 
 ## Intégration front : tout ce qu'il faut
 
-> ⚠️ Cette section contient la clé d'API de dev. **Ne pas pousser ce README sur un dépôt public.** Si la clé fuit, la changer dans `.env` (`API_KEY=`) puis `docker compose up -d api`.
 
 ### Accès
 
