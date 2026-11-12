@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TrendPulse · vérification de l'environnement</title>
+  </head>
+  <body>
+    <h1>Vérification de l'environnement</h1>
+    <p><a href="/">← Retour à TrendPulse</a></p>
+    <p id="health">Connexion à l'API…</p>
+    <ul id="questions"></ul>
+
+    <h2>IA</h2>
+    <form id="ai-form">
+      <input id="prompt" placeholder="Pose une question" required />
+      <button type="submit">Envoyer</button>
+    </form>
+    <p id="ai-answer"></p>
+
+    <h2>Service data</h2>
+    <form id="data-form">
+      <input
+        id="data-question"
+        placeholder="Question au service data"
+        required
+      />
+      <button type="submit">Envoyer</button>
+    </form>
+    <p id="data-answer"></p>
+    <ul id="data-sources"></ul>
+
+    <script type="module" src="/src/debug.ts"></script>
+  </body>
+</html>

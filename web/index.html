@@ -3,32 +3,79 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hackathon</title>
+    <title>TrendPulse · Signaux détectés</title>
   </head>
   <body>
-    <h1>Hackathon</h1>
-    <p id="health">Connexion à l'API…</p>
-    <ul id="questions"></ul>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="logo">
+          <span class="logo-trend">Trend</span
+          ><span class="logo-pulse">Pulse</span>
+        </div>
+        <nav class="menu" aria-label="Navigation principale">
+          <a class="menu-item actif" href="/" aria-current="page">Signaux</a>
+          <span class="menu-item bientot" title="Prévu après la démo"
+            >Alertes</span
+          >
+          <span class="menu-item bientot" title="Prévu après la démo"
+            >Clients</span
+          >
+          <span class="menu-item bientot" title="Prévu après la démo"
+            >Dossiers</span
+          >
+        </nav>
+        <a class="lien-debug" href="/debug.html">Vérifier l'environnement</a>
+      </aside>
 
-    <h2>IA</h2>
-    <form id="ai-form">
-      <input id="prompt" placeholder="Pose une question" required />
-      <button type="submit">Envoyer</button>
-    </form>
-    <p id="ai-answer"></p>
+      <main class="contenu">
+        <header class="entete">
+          <div>
+            <h1>Signaux détectés</h1>
+            <p class="sous-titre">
+              Food &amp; Beverage · du marché source au marché cible, trié par
+              score d'opportunité
+            </p>
+          </div>
+          <label class="filtre">
+            Secteur
+            <select id="secteur">
+              <option value="">Tous</option>
+              <option value="boissons">Boissons</option>
+              <option value="snacking">Snacking</option>
+              <option value="confiserie">Confiserie</option>
+              <option value="laitier">Laitier</option>
+            </select>
+          </label>
+        </header>
 
-    <h2>Service data</h2>
-    <form id="data-form">
-      <input
-        id="data-question"
-        placeholder="Question au service data"
-        required
-      />
-      <button type="submit">Envoyer</button>
-    </form>
-    <p id="data-answer"></p>
-    <ul id="data-sources"></ul>
+        <p id="bandeau-simule" class="bandeau" hidden>
+          Données simulées : jeu de démonstration. Seul le critère « temporalité
+          et persistance » (25 %) est fixé, les autres sont en cours de
+          validation.
+        </p>
 
+        <section class="kpis" id="kpis" aria-label="Indicateurs"></section>
+
+        <section class="carte">
+          <table>
+            <thead>
+              <tr>
+                <th>Tendance</th>
+                <th>Marchés</th>
+                <th>Intérêt sur 12 mois</th>
+                <th>Nature</th>
+                <th>Opportunité</th>
+                <th>Fenêtre de tir</th>
+              </tr>
+            </thead>
+            <tbody id="liste"></tbody>
+          </table>
+          <p id="etat-liste" class="etat">Chargement des tendances…</p>
+        </section>
+
+        <section id="detail" class="detail" hidden aria-live="polite"></section>
+      </main>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

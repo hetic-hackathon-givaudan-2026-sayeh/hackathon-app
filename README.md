@@ -43,7 +43,7 @@ cd hackathon-app
 docker compose up --build
 ```
 
-Ouvrir http://localhost:8080 : le front, l'API et PostgreSQL tournent dans des conteneurs.
+Ouvrir http://localhost:8080 : l'écran « Signaux détectés » de TrendPulse, servi par le front, l'API et PostgreSQL dans des conteneurs. La page http://localhost:8080/debug.html vérifie l'environnement (API, base, IA, service data).
 
 | Commande                                     | Ce qui démarre                                                          |
 | -------------------------------------------- | ----------------------------------------------------------------------- |
@@ -90,7 +90,7 @@ L'IA tourne sur la machine, jamais chez un fournisseur externe : les données in
 
 ## Vérifier que tout marche
 
-Sur http://localhost:5173, on doit voir :
+Sur http://localhost:5173/debug.html (vérification de l'environnement), on doit voir :
 
 - `API OK · PostgreSQL 17…`
 - les 2 questions de test
