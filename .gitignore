@@ -4,3 +4,4 @@ dist/
 db/data/
 .DS_Store
 .scratch/
+.env.local

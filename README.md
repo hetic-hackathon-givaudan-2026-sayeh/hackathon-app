@@ -19,7 +19,7 @@ Ce dépôt contient l'environnement de développement commun (API, front, base P
 ## Stack
 
 - **API** : Node 24 + Express en TypeScript (`api/`)
-- **Front** : Vite en TypeScript, sans framework pour l'instant (`web/`)
+- **Front** : React 19 et Tailwind 4 avec Vite, en TypeScript (`web/`), à partir du prototype de l'équipe (`docs/adr/0005-front-react.md`). En dev, il lit l'API du data si `web/.env.local` est rempli (voir `web/.env.local.example`), sinon notre API, sinon un jeu de démonstration fictif
 - **Base** : PostgreSQL 17, schéma et données de test dans `db/init/`
 - **IA** : un modèle local (Ollama, `llama3.2:3b` par défaut) exposé en format compatible OpenAI, configuré dans `api/.env`. Aucune API d'IA externe (`docs/adr/0002-fournisseur-ia.md`)
 

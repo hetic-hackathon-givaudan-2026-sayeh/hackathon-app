@@ -1,0 +1,316 @@
+/* Thème minimaliste TrendPulse : fond blanc, bordures fines, aucune ombre lourde.
+   Chargé après index.css (le style d'origine de la maquette) pour en simplifier le rendu. */
+
+body,
+.app-shell {
+  background: var(--ivory);
+}
+
+/* Barre latérale claire, comme les tableaux de bord épurés */
+.sidebar {
+  color: var(--ink);
+  background: #ffffff;
+  border-right: 1px solid var(--line);
+}
+.main-nav button {
+  color: var(--muted);
+  border-radius: 8px;
+}
+.main-nav button:hover {
+  color: var(--ink);
+  background: #f4f4f5;
+}
+.main-nav button.active {
+  color: var(--green);
+  background: var(--sage);
+  font-weight: 600;
+}
+.main-nav button i {
+  background: var(--accent);
+}
+.side-bottom {
+  border-top: 1px solid var(--line);
+}
+.side-icon,
+.profile-copy span {
+  color: var(--muted);
+}
+.avatar {
+  border-color: var(--line);
+  color: var(--green);
+  background: var(--sage);
+  font-family: inherit;
+  font-weight: 600;
+}
+.brand-mark {
+  color: var(--green);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+/* Barre du haut */
+.topbar {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+
+/* Cartes : blanches, bordure de 1 px, rayon régulier, pas d'ombre */
+.opportunity-card,
+.summary-card,
+.fit-card,
+.chart-card,
+.source-card,
+.trend-table-wrap,
+.priority-panel,
+.client-list,
+.match-detail,
+.story-canvas,
+.pulse-item,
+.priority-card,
+.filter-bar,
+.carte-tp {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: none;
+}
+.opportunity-card:hover {
+  border-color: #d4d4d8;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+.opportunity-card.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(91, 191, 62, 0.12);
+}
+
+/* Boutons */
+.primary-button {
+  background: var(--green);
+  border-radius: 10px;
+  box-shadow: none;
+}
+.primary-button:hover {
+  background: #163021;
+}
+.outline-button {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+/* Titres et sur-titres plus sobres */
+.page-heading h1,
+.evidence-heading h1 {
+  font-size: 34px;
+  line-height: 1.15;
+}
+.eyebrow {
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+/* Images : plus discrètes, au service des données */
+.opportunity-image img,
+.hero-evidence img,
+.story-canvas img {
+  filter: saturate(0.85);
+}
+
+/* --- Composants ajoutés : indicateurs, globe, pop-up des alertes --- */
+.kpis-tp {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.kpi-tp {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.kpi-tp small {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+.kpi-tp strong {
+  display: block;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--green);
+  margin-top: 2px;
+}
+.kpi-tp span {
+  color: var(--muted);
+  font-size: 12px;
+}
+.carte-tp {
+  padding: 16px;
+  margin-top: 16px;
+}
+.carte-tp h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.globe-tp canvas {
+  display: block;
+  width: 100%;
+  cursor: grab;
+  touch-action: none;
+}
+.globe-tp canvas:active {
+  cursor: grabbing;
+}
+.legende-tp {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.legende-tp i {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+.popup-tp {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 40;
+  width: 330px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 12px 32px rgba(17, 24, 19, 0.12);
+  animation: apparition-tp 0.25s ease-out;
+}
+@keyframes apparition-tp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .popup-tp {
+    animation: none;
+  }
+}
+.popup-tp header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.popup-tp header strong {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--urgence);
+  font-size: 14px;
+}
+.popup-tp header button {
+  background: none;
+  border: 0;
+  color: var(--muted);
+}
+.popup-tp .ligne {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 8px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  text-align: left;
+}
+.popup-tp .ligne:hover {
+  background: #f4f4f5;
+}
+.popup-tp .ligne img {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.popup-tp .ligne small {
+  display: block;
+  color: var(--muted);
+}
+.bandeau-tp {
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+  font-size: 13px;
+}
+.globe-preuves {
+  margin-top: 0;
+  grid-column: 1 / -1;
+}
+
+/* Preuves : texte lisible sur l'image et cartes qui s'adaptent au nombre de critères */
+.hero-statement {
+  font-size: 20px;
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  max-width: 85%;
+  padding: 18px 20px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(6px);
+}
+.evidence-grid {
+  grid-auto-rows: auto;
+  align-items: start;
+}
+.fit-card,
+.chart-card,
+.source-card {
+  height: auto;
+  min-height: 0;
+  overflow: visible;
+}
+.why-now li b,
+.why-now li span {
+  font-size: 13px;
+}
+.opportunity-copy p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.evidence-grid {
+  grid-template-rows: auto;
+}
+.maturity-track span,
+.maturity-track b {
+  font-size: 10px;
+}
+.why-now li {
+  font-size: 12px;
+  gap: 8px;
+  padding-top: 8px;
+}
+.hero-evidence {
+  height: 380px;
+  align-self: stretch;
+}
+.hero-evidence img {
+  height: 100%;
+  object-fit: cover;
+}
