@@ -20,7 +20,7 @@ Consignes pour tout assistant de code (Copilot, Codex, Cursor…) sur ce dépôt
 
 - Lire `docs/adr/` avant toute proposition d'architecture. Ne pas contredire un ADR au statut « acceptée ».
 - Pour changer une décision (base, fournisseur d'IA, framework), proposer un nouvel ADR à partir de `docs/adr/0000-modele.md`, puis s'arrêter et attendre la validation.
-- `0001` : stack Node/TypeScript, Express, Vite, PostgreSQL 17. `0002` : IA locale uniquement. `0003` : contrat d'API (`openapi.yaml`). `0004` : un seul `compose.yaml` avec des profils.
+- `0001` : stack Node/TypeScript, Express, Vite, PostgreSQL 17. `0005` : front en React et Tailwind (remplace la partie front de 0001). `0002` : IA locale uniquement. `0003` : contrat d'API (`openapi.yaml`). `0004` : un seul `compose.yaml` avec des profils.
 
 ## À ne pas faire
 
