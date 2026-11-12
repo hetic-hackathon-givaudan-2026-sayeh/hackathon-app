@@ -1,6 +1,20 @@
-# hackathon-app
+# PulseTrack
 
-Environnement de développement de notre équipe pour le hackathon HETIC × Givaudan (novembre 2026) : une API, un front, une base PostgreSQL et un appel à une IA, le tout lancé dans un dev container identique sur Mac, Windows et Linux. Le produit sera décrit ici dès que le sujet sera fixé avec le product et le data.
+Projet de notre équipe pour le hackathon HETIC × Givaudan (novembre 2026), thème 3 du challenge : « de la tendance émergente aux opportunités de demain ».
+
+PulseTrack aide Givaudan à ne pas investir de temps et de ressources dans chaque buzz viral : l'outil détecte les tendances de goût et de parfum, distingue une vraie tendance d'un simple buzz, estime si elle peut marcher dans un autre pays, puis propose le produit à fabriquer. L'IA tourne en local : aucune donnée ne part chez un fournisseur externe.
+
+Ce dépôt contient l'environnement de développement commun (API, front, base PostgreSQL, IA locale), lancé dans un dev container identique sur Mac, Windows et Linux.
+
+## L'équipe
+
+| Membre         | Rôle                                                           | GitHub             |
+| -------------- | -------------------------------------------------------------- | ------------------ |
+| Ahmed Sayeh    | Tech-lead : architecture, API, front, environnement            | @ahmvdd            |
+| Lucie Barthes  | Product : entretiens, critères buzz / tendance, cadrage du MVP | @LucieBarthes      |
+| Gianni Vecchio | Product : entretiens, parcours utilisateur, cadrage du MVP     | @giannivecchio2906 |
+| Mouhamed Sow   | Data / IA : sources de données, score, service RAG             | @mouhamedx74       |
+| Franck Mboutou | Data / IA : sources de données, score, service RAG             | @FranckRuissel     |
 
 ## Stack
 
