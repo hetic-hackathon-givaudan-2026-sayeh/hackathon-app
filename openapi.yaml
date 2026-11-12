@@ -14,7 +14,7 @@ tags:
   - name: setup
     description: Routes de vérification de l'environnement (déjà en place)
   - name: tendances
-    description: Routes du produit (à implémenter)
+    description: Routes du produit (liste et détail en place, argumentaire à venir)
 paths:
   /api/health:
     get:
@@ -184,6 +184,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Tendance'
+        '400':
+          description: Secteur inconnu, ou limit hors de 1 à 20
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/trends/{id}:
     get:
       tags: [tendances]
@@ -206,7 +212,7 @@ paths:
                         items:
                           $ref: '#/components/schemas/PointHistorique'
         '404':
-          description: Tendance inconnue
+          description: Tendance inconnue (ou id qui n'est pas un entier positif)
           content:
             application/json:
               schema:
@@ -292,6 +298,7 @@ components:
           secteurs,
           pays,
           sources,
+          criteres,
         ]
       properties:
         id:
@@ -336,12 +343,68 @@ components:
         explication:
           type: string
           description: Pourquoi ce verdict, rédigé par le modèle local
+        criteres:
+          type: array
+          description: Le score de durabilité décomposé, chaque critère avec son poids et sa source (étape « Trancher »)
+          items:
+            $ref: '#/components/schemas/Critere'
+        marche_source:
+          type: [string, 'null']
+          description: Code pays où la tendance est observée
+          example: JP
+        marche_cible:
+          type: [string, 'null']
+          description: Code pays visé par le commercial
+          example: FR
+        fenetre_tir:
+          description: Étape « Situer » ; null si la tendance n'a pas encore été évaluée
+          oneOf:
+            - $ref: '#/components/schemas/FenetreTir'
+            - type: 'null'
         donnees_simulees:
           type: boolean
           description: true si la tendance vient du jeu de démonstration
         maj_le:
           type: string
           format: date-time
+    Critere:
+      type: object
+      required: [nom, poids, note, source]
+      properties:
+        nom:
+          type: string
+          example: Temporalité et persistance
+        poids:
+          type: [integer, 'null']
+          minimum: 0
+          maximum: 100
+          description: Poids dans le score, en %. null tant que l'équipe ne l'a pas fixé
+          example: 25
+        note:
+          type: [integer, 'null']
+          minimum: 0
+          maximum: 100
+          description: null tant que le critère n'est pas calculé
+          example: 82
+        source:
+          type: [string, 'null']
+          example: Google Trends, recherches sur 12 à 36 mois
+    FenetreTir:
+      type: object
+      required: [verdict, mois_avant_arrivee, cycle_givaudan_mois]
+      properties:
+        verdict:
+          type: string
+          enum: [go, urgence, no_go]
+          description: go = le temps de développer le produit, urgence = marge courte, no_go = pas une tendance à suivre
+        mois_avant_arrivee:
+          type: [integer, 'null']
+          description: Délai estimé avant l'arrivée de la tendance sur le marché cible
+          example: 11
+        cycle_givaudan_mois:
+          type: [integer, 'null']
+          description: Temps de développement d'un produit chez Givaudan (estimation à confirmer)
+          example: 9
     PointHistorique:
       type: object
       required: [semaine, volume]

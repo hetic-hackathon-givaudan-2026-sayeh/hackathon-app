@@ -137,5 +137,89 @@ server.post('/api/data/ask', async (req, res) => {
   res.json(await response.json());
 });
 
+// --- Tendances (produit) : l'API lit ce que le service data a écrit en base (ADR 0003) ---
+
+const SECTEURS = [
+  'boissons',
+  'snacking',
+  'confiserie',
+  'laitier',
+  'beaute',
+  'parfum',
+  'hygiene',
+];
+
+// Colonnes communes à la liste et au détail, au format du schéma Tendance de openapi.yaml
+const COLONNES_TENDANCE = `
+  t.id, t.nom, t.profil_aromatique, t.verdict, t.score_durabilite, t.score_opportunite,
+  t.secteurs, t.pays, t.sources, t.explication, t.marche_source, t.marche_cible,
+  t.donnees_simulees, t.maj_le,
+  CASE WHEN t.fenetre_verdict IS NULL THEN NULL ELSE json_build_object(
+    'mois_avant_arrivee', t.fenetre_mois,
+    'cycle_givaudan_mois', t.cycle_mois,
+    'verdict', t.fenetre_verdict
+  ) END AS fenetre_tir,
+  COALESCE((
+    SELECT json_agg(json_build_object(
+      'nom', c.nom, 'poids', c.poids, 'note', c.note, 'source', c.source
+    ) ORDER BY c.ordre)
+    FROM criteres c WHERE c.tendance_id = t.id
+  ), '[]') AS criteres`;
+
+server.get('/api/trends', async (req, res) => {
+  const { secteur } = req.query;
+  if (
+    secteur !== undefined &&
+    (typeof secteur !== 'string' || !SECTEURS.includes(secteur))
+  ) {
+    res.status(400).json({
+      error: `Secteur inconnu, valeurs possibles : ${SECTEURS.join(', ')}`,
+    });
+    return;
+  }
+
+  const limit = req.query.limit === undefined ? 5 : Number(req.query.limit);
+  if (!Number.isInteger(limit) || limit < 1 || limit > 20) {
+    res.status(400).json({ error: 'limit doit être un entier entre 1 et 20' });
+    return;
+  }
+
+  const result = await pool.query(
+    `select ${COLONNES_TENDANCE}
+     from tendances t
+     where $1::text is null or $1 = any (t.secteurs)
+     order by t.score_opportunite desc
+     limit $2`,
+    [secteur ?? null, limit],
+  );
+  res.json(result.rows);
+});
+
+server.get('/api/trends/:id', async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id < 1) {
+    res.status(404).json({ error: 'Tendance inconnue' });
+    return;
+  }
+
+  const tendance = await pool.query(
+    `select ${COLONNES_TENDANCE} from tendances t where t.id = $1`,
+    [id],
+  );
+  if (tendance.rowCount === 0) {
+    res.status(404).json({ error: 'Tendance inconnue' });
+    return;
+  }
+
+  // Une ligne par semaine, toutes sources confondues (schéma PointHistorique)
+  const historique = await pool.query(
+    `select to_char(semaine, 'YYYY-MM-DD') as semaine, sum(volume)::int as volume
+     from signaux where tendance_id = $1
+     group by semaine order by semaine`,
+    [id],
+  );
+  res.json({ ...tendance.rows[0], historique: historique.rows });
+});
+
 // Sans hôte explicite, Node écoute sur toutes les interfaces
 server.listen(port, () => console.log(`API sur http://localhost:${port}`));
