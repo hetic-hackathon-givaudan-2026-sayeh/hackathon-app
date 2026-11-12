@@ -14,4 +14,6 @@ RUN npm run build -w web
 FROM nginx:1.29-alpine
 COPY web/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/web/dist /usr/share/nginx/html
+# nginx tourne sans être root : il doit pouvoir lire tous les fichiers, quels que soient les droits d'origine.
+RUN chmod -R a+rX /usr/share/nginx/html
 EXPOSE 80

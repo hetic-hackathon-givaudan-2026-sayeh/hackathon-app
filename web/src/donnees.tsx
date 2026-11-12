@@ -265,9 +265,22 @@ export function DonneesProvider({ children }: { children: ReactNode }) {
         throw new Error(`Erreur ${r.status} sur ${url}`);
       return (await r.json()) as T;
     };
+    // Notre API peut ne pas encore renvoyer les champs ajoutés pour le modèle data :
+    // on complète avec des valeurs neutres au lieu de planter l'écran.
+    const normaliser = (t: TendanceApi): TendanceApi => ({
+      ...t,
+      pays_en_hausse: t.pays_en_hausse ?? [],
+      criteres: (t.criteres ?? []).map((c) => ({
+        ...c,
+        disponible: c.disponible ?? c.note !== null,
+      })),
+      fenetre_tir: t.fenetre_tir
+        ? { ...t.fenetre_tir, libelle: t.fenetre_tir.libelle ?? null }
+        : null,
+    });
     const depuisApi = async () => {
       const liste = await lireJson<TendanceApi[]>('/api/trends?limit=20');
-      return Promise.all(
+      const details = await Promise.all(
         liste.map((t) =>
           lireJson<TendanceApi>(`/api/trends/${t.id}`).catch(() => ({
             ...t,
@@ -275,6 +288,7 @@ export function DonneesProvider({ children }: { children: ReactNode }) {
           })),
         ),
       );
+      return details.map(normaliser);
     };
     const depuisDemo = () =>
       lireJson<TendanceApi[]>(`${import.meta.env.BASE_URL}donnees-demo.json`);
